@@ -1,0 +1,16 @@
+.search_header {
+  background: lightgrey;
+}
+
+.margin_TB20 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.isUppercase {
+  text-transform: uppercase;
+}
+
+.isBold {
+  font-weight:bold;
+}

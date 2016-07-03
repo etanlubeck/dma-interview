@@ -1,0 +1,22 @@
+{
+  "name": "disney-exam-nate-lubeck",
+  "version": "1.0.0",
+  "description": "A sample app for my disney exam",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index",
+    "dev": "nodemon index"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "momentjs": "^1.1.10",
+    "react": "^15.2.0",
+    "react-redux": "^4.4.5",
+    "react-router": "^2.5.2",
+    "redux": "^3.5.2",
+    "webpack": "^1.13.1"
+  }
+}

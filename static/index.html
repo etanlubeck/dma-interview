@@ -1,0 +1,100 @@
+<html>
+  <head>
+    <title>Frontend Test</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://bootswatch.com/flatly/bootstrap.min.css" />
+    <link href="app.css" rel="stylesheet" />
+  </head>
+  <body>
+    <section class="search_header navbar">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <form name="search_movies" class="form-horizontal">
+            <div class="input-group">
+              <input type="text" name="search_bar" class="form-control">
+              <span class="input-group-btn"><button class="btn btn-default">Search</button></span>
+            </div>
+
+            </form>
+        </div>
+      </div>
+    </div>
+  </section>
+    <section class="results_sort">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-3">
+            1 - 5 of <span class="results_num"></span> results
+          </div>
+          <div class="col-sm-3 col-sm-offset-6">
+            <div class="form-group">
+              Sort By:
+              <select class="form-control" id="select">
+                <option>Date</option>
+                <option>Name</option>
+              </select>
+              Ascending / Descending
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="results">
+      <div class="container results-list">
+      </div>
+    </section>
+    <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.13.0/moment.min.js"></script>
+    <script>
+    $(document).ready(function(){
+      //Load data into localStorage so we don't have to make a request everytime.
+
+      if (window.localStorage) {
+        if (!localStorage.getItem('movies')) {
+          $.getJSON('data.json', function(data){
+            $('.results_num').text(data.items.length - 1);
+            localStorage.setItem('movies', JSON.stringify(data));
+          });
+        }
+        var movieList = JSON.parse(localStorage.getItem('movies'));
+        $('.results_num').text(movieList.items.length - 1);
+        $.each(movieList.items, function(i, item){
+          if(i <= 4) {
+            $('.results-list').append(buildMovieItem(item));
+          }
+        });
+      }
+
+
+      //On a form submit query localStorage and return movie title
+      $('form').on('submit', function(event){
+        event.preventDefault();
+        var $searchBarValue = $('[name="search_bar"]').val();
+
+        $.each(movieList.items, function(i, item){
+          if($searchBarValue.toLowerCase() === item.title.toLowerCase()) {
+            $('.results-list').empty().append(buildMovieItem(item));
+          }
+        });
+
+      });
+
+      //Function takes a movie object and returns a template
+      function buildMovieItem (object) {
+        if (typeof object === 'undefined') {
+          return;
+        }
+        var formattedDate = new Date(object.date);
+        var formattedRuntime = object.run_time;
+
+        return '<div class="row margin_TB20"><div class="col-sm-2"><img src="'+ object.image + '" class="img-responsive"></div><div class="col-sm-3"><span class="isBold">'+object.title+'<span class="isUppercase">      <ul class="nav nav-pills"><li class="active"><span class="badge">'+object.rating+'</span></li></ul></span></span></div><div class="col-sm-5"><div><span class="isBold">Release Date: </span><span>'+ formattedDate +'<span></div><div><span class="isBold">Run Time: </span><span>'+ formattedRuntime +'</span></div></div></div>';
+
+      }
+    });
+
+    </script>
+  </body>
+</html>
